@@ -1,0 +1,6 @@
+prates 
+33 
+coco 
+43 
+tenis 
+67
