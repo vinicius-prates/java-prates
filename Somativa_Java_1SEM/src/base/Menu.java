@@ -32,7 +32,7 @@ public class Menu {
             int op = Integer.parseInt(JOptionPane.showInputDialog(null, "           Oque deseja fazer?\n" +
                     "           [1] - Adicionar Produto\n" +
                     "           [2] - Alterar Quantidade\n" +
-                    "           [3] - Remove r Produto\n" +
+                    "           [3] - Remover Produto\n" +
                     "           [4] - Listar Produto\n" +
                     "           [5] - Sair"));
 
@@ -44,7 +44,9 @@ public class Menu {
                 }
                 case 2 -> {
                     produto.preencheArray();
-                    produto.mudarProd();
+                    String name_item = JOptionPane.showInputDialog(null,"Digite o nome do que deseja alterar:");
+                    String qtd_item = JOptionPane.showInputDialog(null, "Digite a quantidade que deseja colocar desse produto:");
+                    produto.mudarProd(name_item, qtd_item);
                     log.add("Produto alterado as: " + LocalDateTime.now() + "\n");
                 }
                 case 3 -> {

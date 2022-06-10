@@ -1,6 +1,4 @@
-prates 
-33 
-coco 
-43 
-tenis 
-67
+Prates
+20
+blau
+35

@@ -62,10 +62,10 @@ public class Txt {
         }
     }
 
-    public static void gravarProd(String zimbas1, String name, String qtd) {
+    public static void gravarProd( String name, String qtd) {
         
         ArrayList<String> produtos = new ArrayList<>();
-        Path caminho = Paths.get(zimbas1 + ".txt");
+        Path caminho = Paths.get("produtos.txt");
         
         produtos.add(name); produtos.add(qtd);
 

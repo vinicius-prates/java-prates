@@ -1,9 +1,15 @@
 package base;
 
 import javax.swing.*;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class Produto {
+    Txt txt = new Txt();
     private String name;
     private int qtd;
     private ArrayList<String> blau = new ArrayList<>();
@@ -74,7 +80,7 @@ public class Produto {
             prodsCru.add(String.valueOf(new_qtd));
             produtos.add(prodsCru);
 
-            Txt.gravarProd("produtos", new_name, String.valueOf(new_qtd));
+            Txt.gravarProd(new_name, String.valueOf(new_qtd));
 
             String yorno_usuario = JOptionPane.showInputDialog(null,"Deseja adicionar mais algum produto? (y/n)");
             yorno_usuario = yorno_usuario.toLowerCase(Locale.ROOT);
@@ -87,44 +93,37 @@ public class Produto {
         }
     }
 
-    public String mudarProd() {
-        String retorno = "";
-        ArrayList<String> item = new ArrayList<>();
-        ArrayList<String> qtd = new ArrayList<>();
-        int ct = 0;
+    public void  mudarProd(String nome, String qtd) {
+        Path path = Paths.get("produtos.txt");
 
-        System.out.println(this.blau);
+        try{
+            List<String> allItems = Files.readAllLines(path, StandardCharsets.UTF_8);
+            HashMap<String, String> dictItems = new HashMap<>();
+            int i = 0;
+            String aux = "";
 
-        for (String val: this.blau) {
-
-            if(ct % 2 == 0){
-                item.add(val);
-            }else{
-                qtd.add(val);
+            for(String values : allItems){
+                if(i % 2 == 0){
+                    dictItems.put(values, "");
+                    aux = values;
+                    i++;
+                }else{
+                    dictItems.replace(aux, values);
+                    i++;
+                }
             }
 
-            ct+=1;
-
+            dictItems.replace(nome, qtd);
+            Files.delete(path);
+            for ( Map.Entry<String, String> entry : dictItems.entrySet() ) {
+                String keys = entry.getKey();
+                String values = entry.getValue();
+                Txt.gravarProd(keys, values);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-            for (int i = 0; i < item.size(); i++) {
-                retorno = retorno.concat(String.format("\n%d Produto: %s -> %s", i, item.get(i), qtd.get(i)));
 
-            }
-
-            JOptionPane.showMessageDialog(null, "Produtos: "+ retorno);
-
-            int valorAlterado = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite o index da quantidade? \n" + this.blau));
-
-            int quantidadeDesejada = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite a quantidade desejada: \n" + retorno));
-
-            this.blau.set(valorAlterado, String.valueOf(quantidadeDesejada));
-            Txt.gravarAux("auxiliar", "produtos", this.blau);
-
-//            Txt.gravarTxtAux("auxiliar","produtos", this.sas);
-            JOptionPane.showMessageDialog(null, "Os produtos agora sao: "+this.blau);
-            this.blau.clear();
-
-        return retorno;
     }
     public void preencheArray(){
       this.blau =  Txt.lerProduto("produtos");
