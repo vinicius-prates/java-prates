@@ -1,0 +1,16 @@
+feijao
+20
+jonas
+9
+prato
+25
+mato
+19
+pao
+35
+comida
+56
+garrafa
+90
+prato
+600

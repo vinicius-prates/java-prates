@@ -81,41 +81,10 @@ public class Txt {
         }
     }
 
-    public static void gravarAux(String n, String newName, ArrayList<String> products) {
-        ArrayList<String> auxiliar = new ArrayList<>();
-        Path camin = Paths.get(n + ".txt");
-        Path paths = Paths.get(newName + ".txt");
 
-
-        String result = String.join(" \n", products);
-        auxiliar.add(result);
-
-        try {
-            if (Files.exists(camin)) {
-                Files.write(camin, auxiliar, StandardCharsets.UTF_8, StandardOpenOption.WRITE);
-            } else {
-                Files.write(camin, auxiliar, StandardCharsets.UTF_8);
-            }
-            if (Files.exists(paths)) {
-                Files.write(paths, auxiliar, StandardCharsets.UTF_8, StandardOpenOption.WRITE);
-            } else {
-                Files.write(paths, auxiliar, StandardCharsets.UTF_8);
-            }
-
-            List<String> conteudo = Files.readAllLines(camin, StandardCharsets.UTF_8);
-            System.out.println("CONTENTS" + conteudo);
-            for (String content : conteudo) {
-                products.add(content);
-                System.out.println(content);
-
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public static ArrayList<String> lerProduto(String nome) {
-        Path path = Paths.get(nome + ".txt");
+        Path path = Paths.get("produtos.txt");
         try {
             List<String> contents = Files.readAllLines(path, StandardCharsets.UTF_8);
             for (String content : contents) {

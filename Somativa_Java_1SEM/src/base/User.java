@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class User {
-    Main main = new Main();
 
     private String login;
     private String password;
@@ -41,8 +40,7 @@ public class User {
 
         for (String value : ler) {
             if (zimbas % 2 == 0) {
-                System.out.println(value);
-                System.out.println(zimbas);
+
                 if (value.equals(login)) {
                     verifUser = true;
                 } else {
@@ -64,6 +62,8 @@ public class User {
         }
         if (!verifUser || !verifSenha) {
             JOptionPane.showMessageDialog(null, "User e/ou senha incorretos!", "Error", JOptionPane.ERROR_MESSAGE);
+            Menu.menuzin();
+
 
 
         } else {

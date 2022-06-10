@@ -38,34 +38,15 @@ public class Produto {
 
     public void setQtd(int qtd) {
         this.qtd = qtd;
+
+    }
+    public static ArrayList<String> lerTxt(String nomeArquivo) throws IOException {
+        Path caminho = Paths.get(nomeArquivo + ".txt");
+        ArrayList<String> txt_data = new ArrayList<>((Files.readAllLines(caminho)));
+        return txt_data;
     }
 
-    public void listarProd() {
-        ArrayList<String> it = new ArrayList<>();
-        ArrayList<String> qt = new ArrayList<>();
 
-        String show = "";
-
-        int count = 0;
-
-        System.out.println(this.blau);
-        for (String value: this.blau) {
-            if(count % 2 == 0){
-                it.add(value);
-
-            }else{
-                qt.add(value);
-
-            }
-            count++;
-        }
-        show = "";
-        for (int i = 0; i < it.size(); i++) {
-            show = show.concat(String.format("\n%d Produto: %s -> %s", i+1, it.get(i), qt.get(i)));
-        }
-        this.blau.clear();
-        JOptionPane.showMessageDialog(null, show);
-    }
 
     public void addProd() {
 
@@ -85,7 +66,6 @@ public class Produto {
             String yorno_usuario = JOptionPane.showInputDialog(null,"Deseja adicionar mais algum produto? (y/n)");
             yorno_usuario = yorno_usuario.toLowerCase(Locale.ROOT);
             if (yorno_usuario.equals("n")){
-                JOptionPane.showMessageDialog(null, this.blau);
                 break;
             } else if(!yorno_usuario.equals("y")) {
                 JOptionPane.showMessageDialog(null, "Opção inválida!");
@@ -97,28 +77,33 @@ public class Produto {
         Path path = Paths.get("produtos.txt");
 
         try{
-            List<String> allItems = Files.readAllLines(path, StandardCharsets.UTF_8);
-            HashMap<String, String> dictItems = new HashMap<>();
+            List<String> produtos = Files.readAllLines(path, StandardCharsets.UTF_8);
+            HashMap<String, String> dicio_produtos = new HashMap<>();
             int i = 0;
-            String aux = "";
+            String variavel_auxiliar = "";
 
-            for(String values : allItems){
+
+            for(String valores : produtos){
+
                 if(i % 2 == 0){
-                    dictItems.put(values, "");
-                    aux = values;
+
+                    dicio_produtos.put(valores, "");
+                    variavel_auxiliar = valores;
                     i++;
+
                 }else{
-                    dictItems.replace(aux, values);
+                    dicio_produtos.replace(variavel_auxiliar, valores);
                     i++;
                 }
             }
 
-            dictItems.replace(nome, qtd);
+            dicio_produtos.replace(nome, qtd);
             Files.delete(path);
-            for ( Map.Entry<String, String> entry : dictItems.entrySet() ) {
-                String keys = entry.getKey();
-                String values = entry.getValue();
-                Txt.gravarProd(keys, values);
+            for ( Map.Entry<String, String> entry : dicio_produtos.entrySet() ) {
+
+                String chave = entry.getKey();
+                String valores = entry.getValue();
+                Txt.gravarProd(chave, valores);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -130,44 +115,74 @@ public class Produto {
     }
 
 
-    public void removerProduto() {
-        produtos.add(this.blau);
-        String retorno = "";
-        ArrayList<String> item = new ArrayList<>();
-        ArrayList<String> qtd = new ArrayList<>();
+    public void removerProduto(String key) {
+        Path caminho = Paths.get("produtos.txt");
 
+        try{
+            List<String> produtos = Files.readAllLines(caminho, StandardCharsets.UTF_8);
+            HashMap<String, String> dictItems = new HashMap<>();
+            int i = 0;
+            String variavel_auxiliar = "";
 
-        int count = 0;
-
-        System.out.println(this.blau);
-        for (String val: this.blau) {
-            if(count % 2 == 0){
-                item.add(val);
-
-            }else{
-                qtd.add(val);
-
+            for(String todos_valores : produtos){
+                if(i % 2 == 0){
+                    dictItems.put(todos_valores, "");
+                    variavel_auxiliar = todos_valores;
+                    i++;
+                }else{
+                    dictItems.replace(variavel_auxiliar, todos_valores);
+                    i++;
+                }
             }
-            count++;
+            dictItems.remove(key);
+            Files.delete(caminho);
+            for ( Map.Entry<String, String> entry : dictItems.entrySet() ) {
+                String keys = entry.getKey();
+                String values = entry.getValue();
+                Txt.gravarProd(keys, values);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        for (int i = 0; i < item.size(); i++) {
-            retorno = retorno.concat(String.format("\n%d Produto: %s -> %s", i+1, item.get(i), qtd.get(i)));
-
-        }
-
-        JOptionPane.showMessageDialog(null, "Os produtos sao: "+retorno);
-        int valorAlterado = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite o index do produto que deseja remover:  \n" + this.blau));
-
-        this.blau.remove(valorAlterado + 1);
-        this.blau.remove(valorAlterado);
-
-        System.out.println("SAAAAAAAAS" + this.blau);
-
-        Txt.gravarAux("auxiliar", "produtos", this.blau);
-        JOptionPane.showMessageDialog(null, "Item removido com sucesso!");
-
-        System.out.println(this.blau);
-        this.blau.clear();
     }
-}
+
+    public static HashMap<String, String> getTxt() throws IOException {
+
+        Path caminho = Paths.get("produtos.txt");
+        List<String> produtos = Files.readAllLines(caminho, StandardCharsets.UTF_8);
+        HashMap<String, String> dicio_produtos = new HashMap<>();
+        int i = 0;
+        String variavel_auxiliar = "";
+
+        for(String values : produtos){
+            if(i % 2 == 0){
+                dicio_produtos.put(values, "");
+                variavel_auxiliar = values;
+                i++;
+            }else{
+                dicio_produtos.replace(variavel_auxiliar, values);
+                i++;
+            }
+        }
+        return dicio_produtos;
+    }
+
+    public static String printaBonito(HashMap<String, String> valor){
+        String frase_fim = "";
+        int i = 0;
+        for ( Map.Entry<String, String> y : valor.entrySet() ) {
+            if(i > 2){
+                frase_fim = frase_fim.concat("");
+                i = 0;
+            }
+
+            String keys = y.getKey();
+            String valores = y.getValue();
+
+            frase_fim = frase_fim.concat(keys + " -> " + valores + "\n");
+            i++;
+        }
+        return frase_fim;
+    }
+    }
+
